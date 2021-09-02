@@ -1,0 +1,58 @@
+@font-face {
+    font-family: 'harmonyOS_Black';
+    src: url(../fonts/HarmonyOS_Sans_TC_Black.ttf);
+}
+@font-face {
+    font-family: 'harmonyOS_Light';
+    src: url(../fonts/HarmonyOS_Sans_Regular.ttf);
+}
+body{
+    overflow: hidden;
+    height: 100vh;
+    padding:15px;
+    -webkit-user-select: none;
+}
+#app {
+    height: 100vh;
+    -webkit-app-region: no-drag;
+}
+.panel {
+    overflow: hidden;
+    background-color: #2a3d48;
+    height: calc(100% - 30px);
+}
+
+
+.option{
+    background-image: url(./option.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.minus{
+    background-image: url(./minus.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.close{
+    background-image: url(./close.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.tab_list{
+    width: 100%;
+    text-align: center;
+}
+.tab_list>li{
+    display: inline-block;
+    color: #fff;
+}
+
+.tab_list h4{
+    font-size: 3.5rem;
+    font-family: 'harmonyOS_Black';
+}
+.tab_list span{
+    font-size: 1rem;
+    font-family: 'harmonyOS_Light';
+}
