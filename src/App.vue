@@ -6,8 +6,8 @@
         <li class="minus flex-none w-4 h-4 cursor-pointer"></li>
         <li class="close flex-none w-4 h-4 cursor-pointer"></li>
       </ul>
-      <ul class="tab_list">
-        <li>
+      <ul class="tab_list flex justify-center items-center">
+        <li class="current">
           <h4>壓縮</h4>
           <span>CCS Compressor</span>
         </li>
@@ -17,7 +17,9 @@
         </li>
       </ul>
       <div class="file_panel">
-
+        <ul class="file_list">
+          <li></li>
+        </ul>
       </div>
     </div>
 

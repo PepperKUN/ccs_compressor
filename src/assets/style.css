@@ -46,13 +46,29 @@ body{
 .tab_list>li{
     display: inline-block;
     color: #fff;
+    height: fit-content;
+    font-size: 0;
+    opacity: 0.4;
+    margin: 10px;
 }
 
 .tab_list h4{
-    font-size: 3.5rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
     font-family: 'harmonyOS_Black';
 }
 .tab_list span{
-    font-size: 1rem;
+    font-size: 0.5rem;
+    line-height: 0.5rem;
     font-family: 'harmonyOS_Light';
+}
+.tab_list li.current h4{
+    font-size: 3.5rem;
+    line-height: 4.5rem;
+}
+.tab_list li.current span{
+    font-size: 1rem;
+}
+.tab_list li.current{
+    opacity: 1;
 }
