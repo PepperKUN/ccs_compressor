@@ -1,0 +1,89 @@
+@font-face {
+    font-family: 'harmonyOS_Black';
+    src: url(./fonts/HarmonyOS_Sans_TC_Black.ttf);
+}
+@font-face {
+    font-family: 'harmonyOS_Light';
+    src: url(./fonts/HarmonyOS_Sans_Regular.ttf);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bar_btn{
+    @apply cursor-pointer p-4 inline-block
+}
+
+body{
+    overflow: hidden;
+    height: 100vh;
+    /* padding:15px; */
+    -webkit-user-select: none;
+}
+#app {
+    height: 100vh;
+    -webkit-app-region: no-drag;
+}
+.panel {
+    overflow: hidden;
+    background-color: #2a3d48;
+    /* height: calc(100% - 30px); */
+    height: 100%;
+}
+
+
+.option{
+    background-image: url(./assets/option.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.minus{
+    background-image: url(./assets/minus.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.close{
+    background-image: url(./assets/close.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.tab_list{
+    width: 100%;
+    text-align: center;
+    height: 102px;
+}
+.tab_list>li{
+    display: inline-block;
+    color: #fff;
+    height: fit-content;
+    font-size: 0;
+    opacity: 0.4;
+    transition: opacity 400ms ease-out;
+    margin: 0.5rem;
+    cursor: pointer;
+}
+
+.tab_list h4{
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-family: 'harmonyOS_Black';
+    transition: all 400ms ease-out;
+}
+.tab_list span{
+    font-size: 0.5rem;
+    line-height: 0.5rem;
+    font-family: 'harmonyOS_Light';
+    transition: all 400ms ease-out;
+}
+.tab_list li.current h4{
+    font-size: 3.5rem;
+    line-height: 4.5rem;
+}
+.tab_list li.current span{
+    font-size: 1rem;
+}
+.tab_list li.current{
+    opacity: 1;
+}

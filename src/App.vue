@@ -1,19 +1,15 @@
 <template>
-    <div class="panel shadow-lg rounded-md" style="-webkit-app-region: drag;">
-      <ul class="top_bar flex p-1 w-full">
-        <li class="option flex-none w-4 h-4 cursor-pointer"></li>
-        <li class="drag flex-grow h-4 cursor-move"></li>
-        <li class="minus flex-none w-4 h-4 cursor-pointer"></li>
-        <li class="close flex-none w-4 h-4 cursor-pointer"></li>
+    <div class="panel rounded-md" >
+      <ul class="top_bar flex flex-wrap w-full" >
+        <li class="option bar_btn hover:bg-green-700"></li>
+        <li class="drag flex-grow p-4 cursor-move hover:bg-blue-600" style="-webkit-app-region: drag;"></li>
+        <li class="minus bar_btn hover:bg-green-700" @click="minimize"></li>
+        <li class="close bar_btn hover:bg-red-500"  @click="close"></li>
       </ul>
-      <ul class="tab_list flex justify-center items-center">
-        <li class="current">
-          <h4>壓縮</h4>
-          <span>CCS Compressor</span>
-        </li>
-        <li class="">
-          <h4>拎走</h4>
-          <span>CCS Package</span>
+      <ul class="tab_list flex justify-center items-center ">
+        <li :class="currentIndex === index?'current':''" v-for="(item, index) in tab_lists" :key="item.id" @click="currentIndex=index">
+          <h4 class="text">{{item.title}}</h4>
+          <span>{{item.des}}</span>
         </li>
       </ul>
       <div class="file_panel">
@@ -32,11 +28,34 @@ export default {
   name: 'App',
   components: {
     // HelloWorld
+  },
+  data() {
+    return {
+      tab_lists: [
+        {
+          title: "壓縮",
+          des: "CCS Compressor"
+        },{
+          title: "拎走",
+          des: "CCS Package"
+        }
+      ],
+      currentIndex: 0,
+    }
+  },
+  methods: {
+    close() {
+      // console.log(window.ipcRenderer);
+      window.ipcRenderer.send('closeWin');
+    },
+    minimize() {
+      // console.log(window.ipcRenderer);
+      window.ipcRenderer.send('minimize');
+    }
   }
 }
 </script>
 
 <style>
-@import './assets/style.css';
 
 </style>
