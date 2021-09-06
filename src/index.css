@@ -25,6 +25,10 @@ body{
     height: 100vh;
     -webkit-app-region: no-drag;
 }
+.top_bar{
+    position: relative;
+    z-index: 10;
+}
 .panel {
     overflow: hidden;
     background-color: #2a3d48;
@@ -52,7 +56,8 @@ body{
 .tab_list{
     width: 100%;
     text-align: center;
-    height: 102px;
+    position: relative;
+    bottom: 2rem;
 }
 .tab_list>li{
     display: inline-block;
