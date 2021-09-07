@@ -1,10 +1,10 @@
 import { contextBridge, ipcRenderer } from 'electron'
-
+const ccsProcess = require('./read');
 
 contextBridge.exposeInMainWorld('ipcRenderer', {
     send: (channel, data) => {
       // whitelist channels
-      let validChannels = ['toMain', 'closeWin', 'minimize']
+      let validChannels = ['toMain', 'closeWin', 'minimize', 'readFiles']
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data)
       }
@@ -19,3 +19,5 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
       }
     }
   })
+
+  console.log(ccsProcess.CcsClean);

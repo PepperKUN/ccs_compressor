@@ -1,7 +1,10 @@
 module.exports = {
     pluginOptions: {
       electronBuilder: {
-        preload: 'src/preload.js',
+        preload: {
+          preload: 'src/preload.js',
+          ccsProcess: 'src/read.js'
+        },
         // Or, for multiple preload files:
       }
     }

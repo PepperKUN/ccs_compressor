@@ -1,5 +1,5 @@
 <template>
-    <div class="panel flex flex-col" >
+    <div class="panel flex flex-col" @dragenter="dragIn" @dragleave="dragOut" @dragover="allowDrop" v-on:drop="fileDrop">
       <ul class="top_bar flex flex-wrap w-full flex-grow-0">
         <li class="option bar_btn hover:bg-green-700"></li>
         <li class="drag flex-grow p-4 cursor-move hover:bg-blue-600" style="-webkit-app-region: drag;"></li>
@@ -20,13 +20,9 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    // HelloWorld
-  },
+  components: {},
   data() {
     return {
       tab_lists: [
@@ -39,16 +35,34 @@ export default {
         }
       ],
       currentIndex: 0,
+      fileIn: false,
     }
   },
   methods: {
     close() {
-      // console.log(window.ipcRenderer);
       window.ipcRenderer.send('closeWin');
     },
     minimize() {
-      // console.log(window.ipcRenderer);
       window.ipcRenderer.send('minimize');
+    },
+    dragIn() {
+      this.fileIn = true;
+      console.log("drag in");
+    },
+    dragOut() {
+      this.fileIn = false;
+      console.log("drag out");
+    },
+    fileDrop(event){
+      event.preventDefault();
+      event.stopPropagation();
+      let filePath=[];
+      event.dataTransfer.files.forEach(f => filePath.push(f.path));
+      // window.ipcRenderer.send('readFiles', filePath);
+    },
+    allowDrop(event) {
+      event.preventDefault();
+      event.stopPropagation();
     }
   }
 }

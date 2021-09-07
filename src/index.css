@@ -57,7 +57,7 @@ body{
     width: 100%;
     text-align: center;
     position: relative;
-    bottom: 2rem;
+    bottom: 1rem;
 }
 .tab_list>li{
     display: inline-block;

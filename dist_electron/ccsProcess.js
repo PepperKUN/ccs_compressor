@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -174,18 +174,6 @@ eval("var helper = __webpack_require__(/*! ./options-helper */ \"./node_modules/
 
 /***/ }),
 
-/***/ "./src/preload.js":
-/*!************************!*\
-  !*** ./src/preload.js ***!
-  \************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! electron */ \"electron\");\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_0__);\n\r\nconst ccsProcess = __webpack_require__(/*! ./read */ \"./src/read.js\");\r\n\r\nelectron__WEBPACK_IMPORTED_MODULE_0__[\"contextBridge\"].exposeInMainWorld('ipcRenderer', {\r\n    send: (channel, data) => {\r\n      // whitelist channels\r\n      let validChannels = ['toMain', 'closeWin', 'minimize', 'readFiles']\r\n      if (validChannels.includes(channel)) {\r\n        electron__WEBPACK_IMPORTED_MODULE_0__[\"ipcRenderer\"].send(channel, data)\r\n      }\r\n    },\r\n    receive: (channel) => {\r\n      let validChannels = ['fromMain']\r\n      if (validChannels.includes(channel)) {\r\n        // Deliberately strip event as it includes `sender`\r\n        electron__WEBPACK_IMPORTED_MODULE_0__[\"ipcRenderer\"].on(channel, (event, args) => {\r\n\r\n        })\r\n      }\r\n    }\r\n  })\r\n\r\n  console.log(ccsProcess.CcsClean);\n\n//# sourceURL=webpack:///./src/preload.js?");
-
-/***/ }),
-
 /***/ "./src/read.js":
 /*!*********************!*\
   !*** ./src/read.js ***!
@@ -197,25 +185,14 @@ eval("// const fs = require('fs');\r\nconst convert = __webpack_require__(/*! xm
 
 /***/ }),
 
-/***/ 0:
-/*!******************************!*\
-  !*** multi ./src/preload.js ***!
-  \******************************/
+/***/ 1:
+/*!***************************!*\
+  !*** multi ./src/read.js ***!
+  \***************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("module.exports = __webpack_require__(/*! E:\\vue_electron\\src\\preload.js */\"./src/preload.js\");\n\n\n//# sourceURL=webpack:///multi_./src/preload.js?");
-
-/***/ }),
-
-/***/ "electron":
-/*!***************************!*\
-  !*** external "electron" ***!
-  \***************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"electron\");\n\n//# sourceURL=webpack:///external_%22electron%22?");
+eval("module.exports = __webpack_require__(/*! E:\\vue_electron\\src\\read.js */\"./src/read.js\");\n\n\n//# sourceURL=webpack:///multi_./src/read.js?");
 
 /***/ }),
 

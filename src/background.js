@@ -6,6 +6,7 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 const path = require('path');
+const fs = require('fs');
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -100,4 +101,13 @@ ipcMain.on("closeWin", (event, args) => {
 ipcMain.on("minimize", (event, args) => {
   console.log('minimize');
   win.minimize();
+});
+
+ipcMain.on("readFiles", (event, args) => {
+  for (const filePath of args) {
+    // Using the path attribute to get absolute file path
+    ccsProcess.CcsClean(filePath, filePath);
+    console.log('File Path of dragged files: ', filePath)
+  }
+  // console.log('readFiles');
 });

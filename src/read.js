@@ -1,4 +1,4 @@
-const fs = require('fs');
+// const fs = require('fs');
 const convert = require('xml-js');
 const parser = new DOMParser();
 let doc;
@@ -200,27 +200,28 @@ const Taglist =[
 
   // CcsClean('activity_origin.ccs', 'activity.ccs');
 
-  document.addEventListener('drop', (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  // document.addEventListener('drop', (event) => {
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  //   window.ipcRenderer.send('readFiles')
+  //   for (const f of event.dataTransfer.files) {
+  //     // Using the path attribute to get absolute file path
+  //     // CcsClean(f.path, f.path);
+  //     console.log('File Path of dragged files: ', f.path)
+  //   }
+  // });
   
-    for (const f of event.dataTransfer.files) {
-      // Using the path attribute to get absolute file path
-      CcsClean(f.path, f.path);
-      console.log('File Path of dragged files: ', f.path)
-    }
-  });
+  // document.addEventListener('dragover', (e) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  // });
   
-  document.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  });
+  // document.addEventListener('dragenter', (event) => {
+  //   console.log('File is in the Drop Space');
+  // });
   
-  document.addEventListener('dragenter', (event) => {
-    // console.log('File is in the Drop Space');
-  });
+  // document.addEventListener('dragleave', (event) => {
+  //   console.log('File has left the Drop Space');
+  // });
   
-  document.addEventListener('dragleave', (event) => {
-    // console.log('File has left the Drop Space');
-  });
-  
+  // alert('readFiles');
