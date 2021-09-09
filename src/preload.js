@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
-const ccsProcess = require('./read');
+// require('./read');
 
 contextBridge.exposeInMainWorld('ipcRenderer', {
     send: (channel, data) => {
@@ -9,15 +9,13 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
         ipcRenderer.send(channel, data)
       }
     },
-    receive: (channel) => {
-      let validChannels = ['fromMain']
+    receive: (channel, callback) => {
+      let validChannels = ['fromMain', 'Writefile']
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
         ipcRenderer.on(channel, (event, args) => {
-
+          callback(event, args)
         })
       }
     }
   })
-
-  console.log(ccsProcess.CcsClean);

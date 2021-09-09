@@ -5,20 +5,25 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-const path = require('path');
-const fs = require('fs');
+const path = require('path')
+
+import {CcsClean}  from './read'
+
+let win
+
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
-let win
 
 async function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 430,
+    maxWidth: 500,
+    minWidth: 300,
     height: 590,
     frame: false,
     transparent: false,
@@ -71,6 +76,7 @@ app.on('ready', async () => {
     }
   }
   createWindow()
+  registerLocalResourceProtocol()
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -88,6 +94,19 @@ if (isDevelopment) {
   }
 }
 
+function registerLocalResourceProtocol() {
+  protocol.registerFileProtocol('local-resource', (request, callback) => {
+    const url = request.url.replace(/^local-resource:\/\//, '')
+    // Decode URL to prevent errors when loading filenames with UTF-8 chars or chars like "#"
+    const decodedUrl = decodeURI(url) // Needed in case URL contains spaces
+    try {
+      return callback(decodedUrl)
+    }
+    catch (error) {
+      console.error('ERROR: registerLocalResourceProtocol: Could not get file path:', error)
+    }
+  })
+}
 
 ipcMain.on("toMain", (event, args) => {
   // app.quit();
@@ -104,10 +123,16 @@ ipcMain.on("minimize", (event, args) => {
 });
 
 ipcMain.on("readFiles", (event, args) => {
-  for (const filePath of args) {
-    // Using the path attribute to get absolute file path
-    ccsProcess.CcsClean(filePath, filePath);
-    console.log('File Path of dragged files: ', filePath)
-  }
-  // console.log('readFiles');
+  CcsClean(args, args).then(note => {
+    event.reply("fromMain", args);
+    console.log(note)
+  });
 });
+
+// setInterval(()=>{
+//   console.log("doing math")
+//   let speed = Math.floor(Math.random() * 100); 
+//   let rpm = Math.floor(Math.random() * 10000);
+//   ipcRenderer.send("speed",speed);
+//   ipcRenderer.send("rpm",rpm);
+// },1000)

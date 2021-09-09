@@ -1,5 +1,8 @@
-// const fs = require('fs');
+import { resolve } from 'path';
+
+const fs = require('fs');
 const convert = require('xml-js');
+var DOMParser = require('xmldom').DOMParser;
 const parser = new DOMParser();
 let doc;
 let tempCcs = {};
@@ -28,25 +31,25 @@ const typeTable = {
   ]
 }
 
-let wrapSample = {
-  "Solution": {
-    "PropertyGroup": {
-      "_attributes": {
-        "Name": "NewCcsFile",
-        "Version": "2.3.3.0",
-        "Type": "CocosStudio"
-      }
-    },
-    "SolutionFolder": {
-      "Group": {
-        "_attributes": {
-          "ctype": "ResourceGroup",
-        },
-        "RootFolder": {}
-      }
-    }
-  }
-}
+// let wrapSample = {
+//   "Solution": {
+//     "PropertyGroup": {
+//       "_attributes": {
+//         "Name": "NewCcsFile",
+//         "Version": "2.3.3.0",
+//         "Type": "CocosStudio"
+//       }
+//     },
+//     "SolutionFolder": {
+//       "Group": {
+//         "_attributes": {
+//           "ctype": "ResourceGroup",
+//         },
+//         "RootFolder": {}
+//       }
+//     }
+//   }
+// }
 const Taglist =[
   "FontResource",
   "FileData",
@@ -62,7 +65,7 @@ const Taglist =[
 
   const readCcFile = function(path) {
     return new Promise((resolve, reject) => {
-      fs.readFile(path, (err, data) => {
+      fs.readFile(path, 'utf-8', (err, data) => {
         if(err) {
           reject(err);
         }
@@ -71,9 +74,20 @@ const Taglist =[
     })
   }
 
+  const writeFile = function(path, data, note){
+    return new Promise((resolve, reject) =>{
+      fs.writeFile(path, data, err => {
+        if (err) {
+          reject(err)
+        }
+        resolve(note);
+      })
+    })
+  }
+
 
   const CcsClean = function(inputPath, outPath){
-    readCcFile(inputPath).then(data =>{
+    return readCcFile(inputPath).then(data =>{
       tempCcs = JSON.parse(convert.xml2json(data, {compact: true, spaces: 4}));
       let csdObj = tempCcs.Solution.SolutionFolder.Group.RootFolder.Project;
       tempCcs.Solution.SolutionFolder.Group.RootFolder = {};
@@ -92,9 +106,8 @@ const Taglist =[
         promises.push(
           readCcFile(element).then(data =>{
             doc = parser.parseFromString(data, 'text/xml');
-
             let fileData =[];
-            for(i in Taglist){
+            for(let i=0; i<Taglist.length; i++){
               let a = Array.from(doc.getElementsByTagName(Taglist[i]));
               fileData = fileData.concat(a);
             }
@@ -188,40 +201,12 @@ const Taglist =[
       const options = {compact: true, ignoreComment: true, spaces: 2};
   
       const content = convert.json2xml(tempCcs, options);
-      // fs.writeFile(outPath, content, err => {
-      //     if (err) {
-      //         console.error(err)
-      //         return
-      //     }
-      //     //文件写入成功。
-      // })
+
+      return writeFile(outPath, content, 'sucess!!!');
     })
   }
 
   // CcsClean('activity_origin.ccs', 'activity.ccs');
 
-  // document.addEventListener('drop', (event) => {
-  //   event.preventDefault();
-  //   event.stopPropagation();
-  //   window.ipcRenderer.send('readFiles')
-  //   for (const f of event.dataTransfer.files) {
-  //     // Using the path attribute to get absolute file path
-  //     // CcsClean(f.path, f.path);
-  //     console.log('File Path of dragged files: ', f.path)
-  //   }
-  // });
-  
-  // document.addEventListener('dragover', (e) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  // });
-  
-  // document.addEventListener('dragenter', (event) => {
-  //   console.log('File is in the Drop Space');
-  // });
-  
-  // document.addEventListener('dragleave', (event) => {
-  //   console.log('File has left the Drop Space');
-  // });
-  
-  // alert('readFiles');
+
+  export {CcsClean} 

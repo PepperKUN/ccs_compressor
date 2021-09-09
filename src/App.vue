@@ -23,6 +23,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'App',
   components: {},
@@ -41,6 +42,14 @@ export default {
       fileIn: false,
       fileList: [],
       dragCount: 0,
+      taglist: [
+        "FontResource",
+        "FileData",
+        "DisabledFileData",
+        "PressedFileData",
+        "NormalFileData",
+      ],
+      finishList: [],
     }
   },
   methods: {
@@ -64,15 +73,24 @@ export default {
       event.preventDefault();
       event.stopPropagation();
       event.dataTransfer.files.forEach(f => {
-        this.fileList.push(f.path);
-        console.log(f)
+        this.fileList.push(f.name);
+      window.ipcRenderer.send('readFiles', f.path);
+        // console.log(f);
         });
-      // window.ipcRenderer.send('readFiles', filePath);
     },
     allowDrop(event) {
       event.preventDefault();
       event.stopPropagation();
     },
+  },
+  mounted(){
+    this.$nextTick(function(){
+      window.ipcRenderer.receive("fromMain", (event, args) => {
+        this.finishList.push(args);
+        console.log(this.finishList);
+      })
+      // console.log(window.ipcRenderer);
+    })
   }
 }
 </script>
