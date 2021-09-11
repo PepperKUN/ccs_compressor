@@ -128,11 +128,3 @@ ipcMain.on("readFiles", (event, args) => {
     console.log(note)
   });
 });
-
-// setInterval(()=>{
-//   console.log("doing math")
-//   let speed = Math.floor(Math.random() * 100); 
-//   let rpm = Math.floor(Math.random() * 10000);
-//   ipcRenderer.send("speed",speed);
-//   ipcRenderer.send("rpm",rpm);
-// },1000)

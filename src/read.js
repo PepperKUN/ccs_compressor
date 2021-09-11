@@ -107,14 +107,17 @@ const Taglist =[
           readCcFile(element).then(data =>{
             doc = parser.parseFromString(data, 'text/xml');
             let fileData =[];
+            let tempData =[];
             for(let i=0; i<Taglist.length; i++){
               let a = Array.from(doc.getElementsByTagName(Taglist[i]));
-              fileData = fileData.concat(a);
+              tempData = tempData.concat(a);
             }
-
+            tempData.forEach(element => {
+              const tempStr = element.getAttribute('Path');
+              if(!fileData.includes(tempStr))fileData.push(tempStr);
+            })
             fileData.forEach(element => {
-              let pathStr = element.getAttribute('Path');
-              let strBlock = pathStr.split('/');
+              const strBlock = element.split('/');
               let tempObj = cocostudio;
   
   
@@ -144,7 +147,7 @@ const Taglist =[
                   if(tag){
                     if(tempObj[tag].findIndex(ele => ele._attributes.Name === strBlock[i])<0){
                       tempObj[tag].push(propName);
-                    }else{}
+                    }
                   }else{
                     tempObj[format] = [];
                     tempObj[format].push(propName);
@@ -176,6 +179,7 @@ const Taglist =[
               }
   
             });
+            console.log(cocostudio);
           }).catch(err => {
             console.log(err);
           })
