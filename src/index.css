@@ -11,9 +11,19 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .bar_btn{
-    @apply cursor-pointer p-4 inline-block
+    @apply cursor-pointer p-2 inline-block
 }
+
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
 
 body{
     overflow: hidden;
@@ -26,33 +36,11 @@ body{
     height: 100vh;
     -webkit-app-region: no-drag;
 }
-.top_bar{
-    position: relative;
-    z-index: 10;
-}
+
 .panel {
-    overflow: hidden;
-    background-color: #2a3d48;
-    /* height: calc(100% - 30px); */
-    /* height: 100%; */
+  transition: background-color 400ms ease;
 }
 
-
-.option{
-    background-image: url(./assets/option.png);
-    background-position: center;
-    background-repeat: no-repeat;
-}
-.minus{
-    background-image: url(./assets/minus.png);
-    background-position: center;
-    background-repeat: no-repeat;
-}
-.close{
-    background-image: url(./assets/close.png);
-    background-position: center;
-    background-repeat: no-repeat;
-}
 
 .tab_list{
     width: 100%;
@@ -98,12 +86,15 @@ body{
     transition: height 200ms ease-out;
 } */
 
-.feather_bg{
-    opacity: 0.5;
+.feather_bg {
     /* top: -20px; */
     border-radius: 100%;
     /* box-shadow: 0 -1rem 10rem #10b981; */
-    box-shadow: 
+    
+}
+.light_one {
+  opacity: 0.5;
+  box-shadow: 
     0 0 2rem #53fff4,
     0 0 4rem #53fff4,
     0 0 6rem #53fff4,
@@ -113,6 +104,31 @@ body{
     0 0 24rem #00fff0,
     0 0 32rem #00fff0;
 }
+.light_two {
+  opacity: 0.8;
+  box-shadow: 
+    0 0 2rem #FDE047,
+    0 0 4rem #FDE047,
+    0 0 6rem #FDE047,
+    0 0 12rem #ff8c2d,
+    0 0 16rem #ff8c2d,
+    0 0 20rem #ff8c2d,
+    0 0 24rem #ff8c2d,
+    0 0 32rem #ff8c2d;
+}
+.light_three {
+  opacity: 0.5;
+  box-shadow: 
+    0 0 2rem #ff538c,
+    0 0 4rem #ff538c,
+    0 0 6rem #ff538c,
+    0 0 12rem #ff006a,
+    0 0 16rem #ff006a,
+    0 0 20rem #ff006a,
+    0 0 24rem #ff006a,
+    0 0 32rem #ff006a;
+}
+
 
 .file_list h6{
     font-family: 'harmonyOS_Black';
@@ -121,6 +137,42 @@ body{
 .expand {
   height: calc(100% - 9rem);
 }
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: height 200ms ease-out;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  height: 0;
+}
+.funcSwitch-enter-active,
+.funcSwitch-leave-active {
+  transition: height 200ms ease-out;
+}
+
+.funcSwitch-enter-from,
+.funcSwitch-leave-to {
+  height: 0;
+}
+.funcSwitch-enter-active .feather_bg,
+.funcSwitch-leave-active .feather_bg{
+  transition: opacity 200ms ease-out;
+}
+
+.funcSwitch-enter-from .feather_bg,
+.funcSwitch-leave-to .feather_bg{
+  opacity: 0;
+}
+
+
+
+
+
+
+
+
 
 
 /*-success animation-*/
@@ -153,10 +205,10 @@ body{
     content: '';
     width: 0; 
     height: 0; 
-    border-left: 1rem solid transparent;
-    border-right: 1rem solid transparent;
+    border-left: 0.75rem solid transparent;
+    border-right: 0.75rem solid transparent;
     border-top: 0rem solid transparent;
-    border-bottom: 1.732rem solid rgb(255, 62, 62);
+    border-bottom: 1.3rem solid rgb(255, 62, 62);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -165,8 +217,8 @@ body{
 
   .load-fail::after{
     content: '!';
-    font-size: 1rem;
-    font-size: large;
+    font-family: 'harmonyOS_Black';
+    font-size: 0.75rem;
     color: white;
     position: absolute;
     left: 50%;

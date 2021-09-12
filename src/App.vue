@@ -1,10 +1,22 @@
 <template>
-    <div class="panel flex flex-col h-screen" @dragenter="dragIn" @dragleave="dragOut" @dragover="allowDrop" @drop="fileDrop">
-      <ul class="top_bar flex flex-wrap w-full flex-grow-0">
-        <li class="option bar_btn"></li>
+    <div :class="['panel', 'flex', 'flex-col', 'h-screen',  tab_lists[currentIndex].bgColor, 'overflow-hidden',]" @dragenter="dragIn" @dragleave="dragOut" @dragover="allowDrop">
+      <ul class="top_bar flex flex-wrap w-full flex-grow-0 relative z-20">
+        <li :class="['bar_btn', 'hover:'+tab_lists[currentIndex].hoverColor]">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-options"></use>
+          </svg>
+        </li>
         <li class="drag flex-grow p-4 cursor-move" style="-webkit-app-region: drag;"></li>
-        <li class="minus bar_btn" @click="minimize"></li>
-        <li class="close bar_btn hover:bg-red-500"  @click="close"></li>
+        <li :class="['bar_btn', 'hover:'+tab_lists[currentIndex].hoverColor]" @click="minimize">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-minimize"></use>
+          </svg>
+        </li>
+        <li class="bar_btn hover:bg-red-500"  @click="close">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-close"></use>
+          </svg>
+        </li>
       </ul>
       <ul class="tab_list flex justify-center items-center flex-grow relative z-10">
         <li :class="currentIndex === index?'current':''" v-for="(item, index) in tab_lists" :key="item.id" @click="currentIndex=index">
@@ -12,50 +24,50 @@
           <span>{{item.des}}</span>
         </li>
       </ul>
-      <div :class="[fileIn?'expand':'h-9', 'file_list', 'flex-grow-0', 'relative', 'transition-all', 'duration-300', 'ease-out', 'flex', 'flex-col']">
-        <div class="feather_bg absolute top-0 w-1/3 h-40 transform -translate-x-1/2 left-1/2 z-0 flex-none"></div>
-        <ul class="relative z-10 bg-white rounded-t-md min-h-3 shadow-md flex-shrink flex-grow overflow-auto px-6 py-3 divide-y divide-gray-200 scrollbar scrollbar-w-2 scrollbar-thumb-gray-200 scrollbar-track-transparent scrollbar-thumb-rounded-full" :v-show="currentIndex === 0">
-          <li v-for="item in fileList" :key="item.id" class="file_list py-3">
-            <div class="flex">
-              <div class="flex-1 overflow-hidden flex-grow">
-                <h6 class="text-base text-gray-800">{{item.name}}</h6>
-                <p class="text-sm text-gray-400 overflow-ellipsis overflow-hidden w-full" :title="item.path">{{item.path}}</p>
-              </div>
-              <div class="status flex-none flex items-center">
-                <div :class="['circle-loader', 'ml-1', item.status==='success'?'load-complete':'', item.status==='fail'?'load-fail':'']" :title="item.des">
-                  <div class="checkmark draw"></div>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
-        <div class="flex-grow-0 bg-white relative z-10 p-4 flex items-center justify-center">
-          <button class="px-4 py-2 w-40 rounded-md bg-green-600 text-white shadow-lg hover:bg-green-500 hover:shadow-none" @click="begin">压缩</button>
-        </div>
-      </div>
+      <transition name="funcSwitch"  mode="out-in"  @after-leave="reset">
+        <component :is="currentTabComponent" :fileIn="fileIn"></component>
+      </transition>
     </div>
 
 </template>
 
 <script>
-
+import compress from './components/compress.vue'
+import pack from './components/packup.vue'
 export default {
   name: 'App',
-  components: {},
+  components: {
+    compress,
+    pack
+  },
   data() {
     return {
       tab_lists: [
         {
           title: "壓縮",
-          des: "CCS Compressor"
+          des: "CCS Compressor",
+          component: 'compress',
+          bgColor: 'bg-turquoise-dark',
+          hoverColor: 'bg-turquoise-light',
+          lightColor: 'light_one',
         },{
-          title: "拎走",
-          des: "CCS Package"
+          title: "打包",
+          des: "Project Package",
+          component: 'pack',
+          bgColor: 'bg-orange-dark',
+          hoverColor: 'bg-orange-light',
+          lightColor: 'light_two',
+        },{
+          title: "反查",
+          des: "Search & Sort",
+          component: 'search',
+          bgColor: 'bg-rose-dark',
+          hoverColor: 'bg-rose-light',
+          lightColor: 'light_three',
         }
       ],
       currentIndex: 0,
       fileIn: false,
-      fileList: [],
       dragCount: 0,
       taglist: [
         "FontResource",
@@ -64,7 +76,6 @@ export default {
         "PressedFileData",
         "NormalFileData",
       ],
-      finishList: [],
       compress_start: false,
     }
   },
@@ -74,6 +85,10 @@ export default {
     },
     minimize() {
       window.ipcRenderer.send('minimize');
+    },
+    allowDrop(event) {
+      event.preventDefault();
+      event.stopPropagation();
     },
     dragIn() {
       this.dragCount++;
@@ -85,52 +100,15 @@ export default {
         this.fileIn = false;
       }
     },
-    fileDrop(event){
-      event.preventDefault();
-      event.stopPropagation();
-      event.dataTransfer.files.forEach(f => {
-        if(!this.fileList.find(Element => Element.path === f.path)){
-          this.fileList.push({
-            name: f.name,
-            path: f.path,
-            status: 'ready',
-            des: 'ready to compress'
-          });
-        }
-        
-        // console.log(f);
-        });
-    },
-    allowDrop(event) {
-      event.preventDefault();
-      event.stopPropagation();
-    },
-    begin() {
-      this.fileList.forEach(Element => {
-        Element.status = 'loading'
-      })
-      this.fileList.forEach(Element => {
-        window.ipcRenderer.send('readFiles', Element.path);
-      })
+    reset() {
+      this.fileIn = false
+      this.dragCount = 0
     }
   },
-  mounted(){
-    this.$nextTick(function(){
-      window.ipcRenderer.receive("fromMain", (event, args) => {
-        // this.finishList.push(args);
-        // console.log(this.finishList);
-        const fileIndex = this.fileList.findIndex(data => data.path === args.path);
-        if(fileIndex>=0&&args.result){
-          this.fileList[fileIndex].status = 'success'
-          this.fileList[fileIndex].des = 'completed'
-        }else{
-          this.fileList[fileIndex].status = 'fail'
-          this.fileList[fileIndex].des = args.error.message;
-        }
-        console.log(args);
-      })
-      // console.log(window.ipcRenderer);
-    })
+  computed: {
+    currentTabComponent() {
+      return this.tab_lists[this.currentIndex].component
+    }
   }
 }
 </script>

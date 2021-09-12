@@ -97,7 +97,7 @@ const Taglist =[
       // console.log(csdObj);
       return csdObj;
     }).then(data =>{
-      if(!data)throw new Error('No csd file included!')
+      if(!data)throw new Error('No csd file was included!')
       let cocostudio = {
         "Folder": [],
         "Project": [],
