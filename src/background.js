@@ -27,6 +27,7 @@ async function createWindow() {
     height: 590,
     frame: false,
     transparent: false,
+    icon: './src/assets/icon.png',
     webPreferences: {
       
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -124,7 +125,21 @@ ipcMain.on("minimize", (event, args) => {
 
 ipcMain.on("readFiles", (event, args) => {
   CcsClean(args, args).then(note => {
-    event.reply("fromMain", note);
+    let info;
+    if(note instanceof Error){
+      info = {
+        path:args,
+        result: undefined,
+        error: note,
+      }
+    }else{
+      info = {
+        path:args,
+        result: note,
+        error: undefined,
+      }
+    }
+    event.reply("fromMain", info);
     // console.log(note)
   });
 });

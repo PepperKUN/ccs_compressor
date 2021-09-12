@@ -94,8 +94,10 @@ const Taglist =[
       let csdObj = tempCcs.Solution.SolutionFolder.Group.RootFolder.Project;
       tempCcs.Solution.SolutionFolder.Group.RootFolder = {};
       // tempCcs = tempCcs;
+      // console.log(csdObj);
       return csdObj;
     }).then(data =>{
+      if(!data)throw new Error('No csd file included!')
       let cocostudio = {
         "Folder": [],
         "Project": [],
@@ -104,16 +106,21 @@ const Taglist =[
       let allPath = [];
       let cleanPath =[];
       const relativePath = inputPath.substring(0, inputPath.lastIndexOf('\\'));
+
+      if(!Array.isArray(data))data = [data];
       data.forEach(element =>{
-        element = `${relativePath}/cocosstudio/${element._attributes.Name}`;
+        const el_path = `${relativePath}/cocosstudio/${element._attributes.Name}`;
         promises.push(
-          readCcFile(element).then(data =>{
+          readCcFile(el_path).then(data =>{
             doc = parser.parseFromString(data, 'text/xml');
             Taglist.forEach(tagName => {
               Array.from(doc.getElementsByTagName(tagName)).forEach(element => {
                 allPath.push(element.getAttribute('Path'));
               })
             })
+          }).catch(error =>{
+            const idx = data.findIndex(el => el._attributes.Name ===  element._attributes.Name);
+            data.splice(idx, 1);
           })
         )
       })
@@ -189,7 +196,7 @@ const Taglist =[
           cocostudio.Folder.splice(defaultIndex, 1);
         }
         return cocostudio;
-      })
+      }).catch(error => console.log(error));
     }).then(data => {
       // tempCcs.Solution.SolutionFolder.Group.RootFolder = {
       //   ...rootFolder_attributes,
@@ -204,7 +211,7 @@ const Taglist =[
 
       // return writeFile(outPath, content, 'sucess!!!');
       return data;
-    })
+    }).catch(err => err)
   }
 
   // CcsClean('activity_origin.ccs', 'activity.ccs');

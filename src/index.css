@@ -118,6 +118,10 @@ body{
     font-family: 'harmonyOS_Black';
 }
 
+.expand {
+  height: calc(100% - 9rem);
+}
+
 
 /*-success animation-*/
 
@@ -138,6 +142,36 @@ body{
     animation: none;
     border-color: #5cb85c;
     transition: border 500ms ease-out;
+  }
+
+  .load-fail {
+    -webkit-animation: none;
+    animation: none;
+    border: none;
+  }
+  .load-fail::before{
+    content: '';
+    width: 0; 
+    height: 0; 
+    border-left: 1rem solid transparent;
+    border-right: 1rem solid transparent;
+    border-top: 0rem solid transparent;
+    border-bottom: 1.732rem solid rgb(255, 62, 62);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .load-fail::after{
+    content: '!';
+    font-size: 1rem;
+    font-size: large;
+    color: white;
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%,-50%);
   }
   
   .checkmark {

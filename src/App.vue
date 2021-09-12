@@ -12,22 +12,24 @@
           <span>{{item.des}}</span>
         </li>
       </ul>
-      <div :class="[fileIn?'h-4/5':'h-9', 'file_list', 'flex-grow-0', 'relative', 'transition-all', 'duration-300', 'ease-out', 'flex', 'flex-col']">
-        <div class="feather_bg absolute top-0 w-1/3 h-40 transform -translate-x-1/2 left-1/2 z-0"></div>
-        <ul class="relative z-10 bg-white rounded-t-md min-h-3 h-full shadow-md flex-shrink flex-grow overflow-auto px-6 py-3 divide-y divide-gray-200 scrollbar scrollbar-w-2 scrollbar-thumb-gray-200 scrollbar-track-transparent scrollbar-thumb-rounded-full" :v-show="currentIndex === 0">
-          <li v-for="item in fileList" :key="item.id" class="file_list py-3 flex">
-            <div class="flex-1 overflow-hidden flex-grow">
-              <h6 class="text-xl text-gray-800">{{item.name}}</h6>
-              <p class="text-base text-gray-400 overflow-ellipsis overflow-hidden w-full" :title="item.path">{{item.path}}</p>
-            </div>
-            <div class="status flex-none flex items-center">
-              <div :class="['circle-loader', 'ml-1', compress_start?'load-complete':'']" :title="compress_start?'Completed':''">
-                <div class="checkmark draw"></div>
+      <div :class="[fileIn?'expand':'h-9', 'file_list', 'flex-grow-0', 'relative', 'transition-all', 'duration-300', 'ease-out', 'flex', 'flex-col']">
+        <div class="feather_bg absolute top-0 w-1/3 h-40 transform -translate-x-1/2 left-1/2 z-0 flex-none"></div>
+        <ul class="relative z-10 bg-white rounded-t-md min-h-3 shadow-md flex-shrink flex-grow overflow-auto px-6 py-3 divide-y divide-gray-200 scrollbar scrollbar-w-2 scrollbar-thumb-gray-200 scrollbar-track-transparent scrollbar-thumb-rounded-full" :v-show="currentIndex === 0">
+          <li v-for="item in fileList" :key="item.id" class="file_list py-3">
+            <div class="flex">
+              <div class="flex-1 overflow-hidden flex-grow">
+                <h6 class="text-base text-gray-800">{{item.name}}</h6>
+                <p class="text-sm text-gray-400 overflow-ellipsis overflow-hidden w-full" :title="item.path">{{item.path}}</p>
+              </div>
+              <div class="status flex-none flex items-center">
+                <div :class="['circle-loader', 'ml-1', item.status==='success'?'load-complete':'', item.status==='fail'?'load-fail':'']" :title="item.des">
+                  <div class="checkmark draw"></div>
+                </div>
               </div>
             </div>
           </li>
         </ul>
-        <div class="flex-grow-0 bg-white relative z-10 h-20  flex items-center justify-center">
+        <div class="flex-grow-0 bg-white relative z-10 p-4 flex items-center justify-center">
           <button class="px-4 py-2 w-40 rounded-md bg-green-600 text-white shadow-lg hover:bg-green-500 hover:shadow-none" @click="begin">压缩</button>
         </div>
       </div>
@@ -91,10 +93,11 @@ export default {
           this.fileList.push({
             name: f.name,
             path: f.path,
-            complete: false,
+            status: 'ready',
+            des: 'ready to compress'
           });
         }
-        window.ipcRenderer.send('readFiles', f.path);
+        
         // console.log(f);
         });
     },
@@ -103,14 +106,27 @@ export default {
       event.stopPropagation();
     },
     begin() {
-      this.compress_start = !this.compress_start;
+      this.fileList.forEach(Element => {
+        Element.status = 'loading'
+      })
+      this.fileList.forEach(Element => {
+        window.ipcRenderer.send('readFiles', Element.path);
+      })
     }
   },
   mounted(){
     this.$nextTick(function(){
       window.ipcRenderer.receive("fromMain", (event, args) => {
-        this.finishList.push(args);
+        // this.finishList.push(args);
         // console.log(this.finishList);
+        const fileIndex = this.fileList.findIndex(data => data.path === args.path);
+        if(fileIndex>=0&&args.result){
+          this.fileList[fileIndex].status = 'success'
+          this.fileList[fileIndex].des = 'completed'
+        }else{
+          this.fileList[fileIndex].status = 'fail'
+          this.fileList[fileIndex].des = args.error.message;
+        }
         console.log(args);
       })
       // console.log(window.ipcRenderer);
