@@ -2,6 +2,9 @@
   <div :class="[fileIn?'expand':'h-9', 'file_list', 'flex-grow-0', 'relative', 'transition-all', 'duration-300', 'ease-out', 'flex', 'flex-col']" @dragover="allowDrop" @drop="fileDrop">
     <div class="feather_bg absolute top-0 w-1/3 h-40 transform -translate-x-1/2 left-1/2 z-0 flex-none light_one"></div>
     <ul class="relative z-10 bg-white rounded-t-md min-h-3 shadow-md flex-shrink flex-grow overflow-auto px-6 py-3 divide-y divide-gray-200 scrollbar scrollbar-w-2 scrollbar-thumb-gray-200 scrollbar-track-transparent scrollbar-thumb-rounded-full" >
+      <div class="tips">
+        
+      </div>
       <li v-for="item in fileList" :key="item.id" class="file_list">
         <div class="flex py-3 cursor-pointer" @click="subMenu(item)">
           <div class="flex-1 overflow-hidden flex-grow">
@@ -52,24 +55,37 @@ export default {
     fileIn: Boolean,
 
   },
+  data() {
+    return {
+      fileList: [],
+      acceptType: ['ccs'],
+    }
+  },
+  watch: {
+    fileList(newList, oldList){
+      console.log(newList.length, oldList.length);
+      this.$emit('dropCheck', newList.length);
+    }
+  },
+  emits: ['dropCheck'],
   methods: {
     fileDrop(event){
         event.preventDefault();
         event.stopPropagation();
         event.dataTransfer.files.forEach(f => {
             const rawList = f.name.split('.');
-            if(!this.fileList.find(Element => Element.path === f.path)&&rawList[rawList.length - 1]==='ccs'){
-            this.fileList.push({
-                name: f.name,
-                path: f.path,
-                stats: 'ready',
-                des: 'ready to compress',
-                operate: false,
-            });
+            if(!this.fileList.find(Element => Element.path === f.path)&&this.acceptType.includes(rawList[rawList.length - 1].toLowerCase())){
+              this.fileList.push({
+                  name: f.name,
+                  path: f.path,
+                  stats: 'ready',
+                  des: 'ready to compress',
+                  operate: false,
+              });
+            }else if(this.fileList.length === 0){
+              this.fileList = [];
             }
-            
-            // console.log(f);
-            });
+        });
     },
     allowDrop(event) {
       event.preventDefault();
@@ -95,15 +111,12 @@ export default {
     },
     deleteItem(el) {
       const idx = this.fileList.findIndex(data => data.path===el.path);
-      this.fileList.splice(idx, 1);
+      let tempArray = JSON.parse(JSON.stringify(this.fileList));
+      tempArray.splice(idx, 1);
+      this.fileList = tempArray;
     },
     deleteAll() {
       this.fileList = [];
-    }
-  },
-  data() {
-    return {
-      fileList: [],
     }
   },
   mounted(){

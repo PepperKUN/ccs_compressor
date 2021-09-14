@@ -24,8 +24,10 @@
           <span>{{item.des}}</span>
         </li>
       </ul>
-      <transition name="funcSwitch"  mode="out-in"  @after-leave="reset">
-        <component :is="currentTabComponent" :fileIn="fileIn"></component>
+      <transition name="funcSwitch"  mode="out-in"  @after-leave="switchReset">
+        <keep-alive>
+          <component :is="currentTabComponent" :fileIn="fileIn[currentIndex]" @dropCheck='getListLength'></component>
+        </keep-alive>
       </transition>
     </div>
 
@@ -69,7 +71,8 @@ export default {
         }
       ],
       currentIndex: 0,
-      fileIn: false,
+      fileIn: [false,false,false],
+      listLength: [0, 0, 0],
       dragCount: 0,
       taglist: [
         "FontResource",
@@ -79,6 +82,12 @@ export default {
         "NormalFileData",
       ],
       compress_start: false,
+    }
+  },
+  watch: {
+    listLength(newData){
+      console.log(newData);
+      if(newData[this.currentIndex] === 0)this.fileIn[this.currentIndex] = false
     }
   },
   methods: {
@@ -94,17 +103,25 @@ export default {
     },
     dragIn() {
       this.dragCount++;
-      this.fileIn = true;
+      this.fileIn[this.currentIndex] = true;
     },
     dragOut() {
       this.dragCount--;
       if(this.dragCount === 0){
-        this.fileIn = false;
+        this.fileIn[this.currentIndex] = false;
       }
     },
-    reset() {
-      this.fileIn = false
+    switchReset() {
       this.dragCount = 0
+    },
+    fullReset() {
+      this.fileIn[this.currentIndex] = false
+      this.dragCount = 0
+    },
+    getListLength(currentLength) {
+      let tempListLength = JSON.parse(JSON.stringify(this.listLength));
+      tempListLength[this.currentIndex] = currentLength;
+      this.listLength = tempListLength;
     }
   },
   computed: {
