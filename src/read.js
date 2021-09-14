@@ -214,7 +214,9 @@ const Taglist =[
     }).catch(err => err)
   }
 
-  // CcsClean('activity_origin.ccs', 'activity.ccs');
+  const pic_Search = function() {
+    
+  }
 
 
   export {CcsClean} 

@@ -111,7 +111,11 @@ export default {
       window.ipcRenderer.receive("fromMain", (event, args) => {
         console.log(args);
         const fileIndex = this.fileList.findIndex(data => {
-          data.path == args.path
+          if(data.path !== args.path){
+            console.log(data.path, args.path);
+          }else{
+            return true
+          }
         });
         console.log(fileIndex, args.path);
         if(fileIndex>=0&&args.result){

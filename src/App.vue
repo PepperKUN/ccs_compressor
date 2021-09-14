@@ -34,18 +34,20 @@
 <script>
 import compress from './components/compress.vue'
 import pack from './components/packup.vue'
+import search from './components/search.vue'
 export default {
   name: 'App',
   components: {
     compress,
-    pack
+    pack,
+    search
   },
   data() {
     return {
       tab_lists: [
         {
-          title: "壓縮",
-          des: "CCS Compressor",
+          title: "清理",
+          des: "CCS Cleaning",
           component: 'compress',
           bgColor: 'bg-turquoise-dark',
           hoverColor: 'bg-turquoise-light',
