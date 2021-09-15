@@ -42,8 +42,9 @@
       </li>
     </ul>
     <div class="flex-grow-0 bg-white relative z-10 p-4 flex items-center justify-center gap-2">
-      <button class="px-2 py-2 w-40 rounded-md bg-red-600 text-white shadow-lg hover:bg-red-500 hover:shadow-none" @click="deleteAll" v-show="fileList.length>0">删除全部</button>
-      <button class="px-4 py-2 w-40 rounded-md bg-green-600 text-white shadow-lg hover:bg-green-500 hover:shadow-none" @click="begin">压缩</button>
+      <button class="px-2 py-2 w-40 rounded-md bg-red-600 text-white shadow-lg hover:bg-red-500 hover:shadow-none" @click="deleteAll" v-show="fileList.length>0&&!compressing">删除全部</button>
+      <button class="px-4 py-2 w-40 rounded-md bg-gray-400 text-white shadow-lg hover:bg-gray-200 hover:shadow-none" v-if="compressing" @click="stop">放弃</button>
+      <button class="px-4 py-2 w-40 rounded-md bg-green-600 text-white shadow-lg hover:bg-green-500 hover:shadow-none" v-else @click="begin">压缩</button>
     </div>
   </div>
 </template>
@@ -59,12 +60,21 @@ export default {
     return {
       fileList: [],
       acceptType: ['ccs'],
+      startIndex: -1,
+      compressing: false,
     }
   },
   watch: {
     fileList(newList, oldList){
       console.log(newList.length, oldList.length);
       this.$emit('dropCheck', newList.length);
+    },
+    startIndex(newData) {
+      if(newData < this.fileList.length&&this.compressing){
+        window.ipcRenderer.send('readFiles', this.fileList[newData].path);
+      }else {
+        this.compressing = false;
+      }
     }
   },
   emits: ['dropCheck'],
@@ -92,22 +102,23 @@ export default {
       event.stopPropagation();
     },
     begin() {
+      this.fileList.forEach(Element => Element.operate = false)
       this.fileList.forEach(Element => {
         Element.stats = 'loading'
       })
-      this.fileList.forEach(Element => {
-        window.ipcRenderer.send('readFiles', Element.path);
-      })
-      // for(let i in this.fileList){
-      //   window.ipcRenderer.send('readFiles', this.fileList[i].path);
-
-      // }
+      this.compressing = true;
+      this.startIndex = 0;
+    },
+    stop() {
+      this.compressing = false;
     },
     subMenu(el) {
-      this.fileList.forEach(Element => {
-        if(Element !== el)Element.operate = false;
-      })
-      el.operate = !el.operate;
+      if(!this.compressing){
+        this.fileList.forEach(Element => {
+          if(Element !== el)Element.operate = false;
+        })
+        el.operate = !el.operate;
+      }
     },
     deleteItem(el) {
       const idx = this.fileList.findIndex(data => data.path===el.path);
@@ -134,6 +145,7 @@ export default {
           this.fileList[fileIndex].des = args.error.message;
         }
         console.log(args);
+        this.startIndex++;
       })
       // console.log(window.ipcRenderer);
     })

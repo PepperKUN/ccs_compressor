@@ -1,7 +1,5 @@
 
 'use strict';
-//process.argv[0] node安装路径 process.argv[1] 本js的路径
-//console.log(process.argv[0],process.argv[1],process.argv[2], process.argv[3], process.argv[4], process.argv[5], process.argv[6], process.argv[7])
  
 var Excel = require('exceljs');
 const fs = require('fs');

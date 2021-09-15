@@ -147,8 +147,5 @@ ipcMain.on("readFiles", (event, args) => {
 });
 
 ipcMain.on("excel", (event, args) => {
-  console.log(args);
-  const tdata = JSON.parse(args);
-  console.log(tdata);
-  writeExcel(tdata)
+  writeExcel(JSON.parse(args))
 })
