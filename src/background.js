@@ -8,6 +8,8 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 const path = require('path')
 
 import {CcsClean}  from './read'
+import {writeExcel}  from './excelProcess'
+import { json2xml } from 'xml-js'
 
 let win
 
@@ -143,3 +145,10 @@ ipcMain.on("readFiles", (event, args) => {
     // console.log(note)
   });
 });
+
+ipcMain.on("excel", (event, args) => {
+  console.log(args);
+  const tdata = JSON.parse(args);
+  console.log(tdata);
+  writeExcel(tdata)
+})

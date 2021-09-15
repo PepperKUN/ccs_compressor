@@ -20,6 +20,17 @@ export default {
     return {
         fileList: [],
         acceptType: ['jpg', 'png'],
+        excelData: [
+          {idd:1,namee:"张三"},
+          {idd:2,namee:"李四"},
+          {idd:3,namee:"王二"},
+          {idd:4,namee:"麻子"},
+          {idd:1,namee:"张三"},
+          {idd:2,namee:"李四"},
+          {idd:3,namee:"王二"},
+          {idd:4,namee:"麻子"},
+          {idd:1,namee:"张三"},
+        ]
     }
   },
   watch: {
@@ -52,7 +63,10 @@ export default {
       event.stopPropagation();
     },
     search() {
-        console.log('!!!');
+      const tempData = JSON.stringify(this.excelData)
+      // console.log(tempData);
+      window.ipcRenderer.send('excel', tempData);
+      console.log('!!!');
     },
     deleteAll() {
       this.fileList = [];

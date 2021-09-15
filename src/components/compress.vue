@@ -122,15 +122,10 @@ export default {
   mounted(){
     this.$nextTick(function(){
       window.ipcRenderer.receive("fromMain", (event, args) => {
-        console.log(args);
         const fileIndex = this.fileList.findIndex(data => {
-          if(data.path !== args.path){
-            console.log(data.path, args.path);
-          }else{
-            return true
-          }
+          if(data.path === args.path)return true
         });
-        console.log(fileIndex, args.path);
+        // console.log(fileIndex, args.path);
         if(fileIndex>=0&&args.result){
           this.fileList[fileIndex].stats = 'success'
           this.fileList[fileIndex].des = 'completed'
