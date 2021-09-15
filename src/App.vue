@@ -1,5 +1,5 @@
 <template>
-    <div :class="['panel', 'flex', 'flex-col', 'h-screen',  tab_lists[currentIndex].bgColor, 'overflow-hidden',]" @dragenter="dragIn" @dragleave="dragOut" @dragover="allowDrop">
+    <div :class="['panel', 'flex', 'flex-col', 'h-screen',  tab_lists[currentIndex].bgColor, 'overflow-hidden',]" @dragenter="dragIn" @dragleave="dragOut" @dragover="allowDrop" @drop="fileDrop">
       <ul class="top_bar flex flex-wrap w-full flex-grow-0 relative z-20">
         <li :class="['bar_btn', 'hover:'+tab_lists[currentIndex].hoverColor]">
           <svg class="icon" aria-hidden="true">
@@ -26,7 +26,7 @@
       </ul>
       <transition name="funcSwitch"  mode="out-in"  @after-leave="switchReset">
         <keep-alive>
-          <component :is="currentTabComponent" :fileIn="fileIn[currentIndex]" @dropCheck='getListLength'></component>
+          <component :is="currentTabComponent" :fileIn="fileIn[currentIndex]" v-on:dropCheck='getListLength'></component>
         </keep-alive>
       </transition>
     </div>
@@ -86,8 +86,11 @@ export default {
   },
   watch: {
     listLength(newData){
-      console.log(newData);
-      if(newData[this.currentIndex] === 0)this.fileIn[this.currentIndex] = false
+      if(newData[this.currentIndex] === 0){
+        this.fileIn[this.currentIndex] = false
+
+      }
+
     }
   },
   methods: {
@@ -110,6 +113,14 @@ export default {
       if(this.dragCount === 0){
         this.fileIn[this.currentIndex] = false;
       }
+    },
+    fileDrop(event){
+        event.preventDefault();
+        event.stopPropagation();
+        let tempListLength = JSON.parse(JSON.stringify(this.listLength));
+        // console.log(this.listLength);
+        // tempListLength[this.currentIndex] = tempListLength[this.currentIndex] + 0;
+        this.listLength = tempListLength;
     },
     switchReset() {
       this.dragCount = 0
