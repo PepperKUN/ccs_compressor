@@ -21,15 +21,226 @@ export default {
         fileList: [],
         acceptType: ['jpg', 'png'],
         excelData: [
-          {idd:1,namee:"张三"},
-          {idd:2,namee:"李四"},
-          {idd:3,namee:"王二"},
-          {idd:4,namee:"麻子"},
-          {idd:1,namee:"张三"},
-          {idd:2,namee:"李四"},
-          {idd:3,namee:"王二"},
-          {idd:4,namee:"麻子"},
-          {idd:1,namee:"张三"},
+            {
+                "ccs": "c1.ccs",
+                "csd": "b1.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a2,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a3,png"
+            },
+            {
+                "ccs": "",
+                "csd": "b2.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a2,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a3,png"
+            },
+            {
+                "ccs": "",
+                "csd": "b3.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "b12.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a2,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a3,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a4,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a5,png"
+            },
+            {
+                "ccs": "c2.ccs",
+                "csd": "b4.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a4,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a5,png"
+            },
+            {
+                "ccs": "",
+                "csd": "b6.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a2,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a4,png"
+            },
+            {
+                "ccs": "",
+                "csd": "b8.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a4,png"
+            },
+            {
+                "ccs": "",
+                "csd": "b13.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a3,png"
+            },
+            {
+                "ccs": "",
+                "csd": "b14.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a2,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a3,png"
+            },
+            {
+                "ccs": "c3.ccs",
+                "csd": "b5.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a2,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a3,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a4,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a5,png"
+            },
+            {
+                "ccs": "",
+                "csd": "b9.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a3,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a4,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a5,png"
+            },
+            {
+                "ccs": "",
+                "csd": "b15.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a2,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a3,png"
+            },
+            {
+                "ccs": "c4.ccs",
+                "csd": "b7.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a2,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a4,png"
+            },
+            {
+                "ccs": "c6.ccs",
+                "csd": "b11.csd",
+                "pic": "a1.png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a3,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a4,png"
+            },
+            {
+                "ccs": "",
+                "csd": "",
+                "pic": "a5,png"
+            }
         ]
     }
   },

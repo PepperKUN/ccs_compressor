@@ -9,10 +9,8 @@ const path = require('path')
 
 import {CcsClean}  from './read'
 import {writeExcel}  from './excelProcess'
-import { json2xml } from 'xml-js'
 
 let win
-
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([

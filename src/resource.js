@@ -1,4 +1,4 @@
-const list ={
+const sampleList ={
     "3d_affair_main_icon_10.png": [],
     "3d_affair_main_icon_left_01.png": [],
     "3d_affair_main_icon_left_02.png": [
@@ -809,26 +809,143 @@ const list ={
     ],
 }
 
+const list = {
+    'a1.png': [
+        'b1.csd',
+        'b2.csd',
+        'b3.csd',
+        'b4.csd',
+        'b5.csd',
+        'b6.csd',
+        'b7.csd',
+        'b8.csd',
+        'b9.csd',
+        'b11.csd',
+        'b12.csd',
+        'b13.csd',
+        'b14.csd',
+        'b15.csd',
+    ],
+    'a2,png': [
+        'b1.csd',
+        'b2.csd',
+        'b5.csd',
+        'b6.csd',
+        'b7.csd',
+        'b12.csd',
+        'b14.csd',
+        'b15.csd',
+    ],
+    'a3,png': [
+        'b1.csd',
+        'b2.csd',
+        'b5.csd',
+        'b9.csd',
+        'b11.csd',
+        'b12.csd',
+        'b13.csd',
+        'b14.csd',
+        'b15.csd',
+    ],
+    'a4,png': [
+        'b4.csd',
+        'b5.csd',
+        'b6.csd',
+        'b7.csd',
+        'b8.csd',
+        'b9.csd',
+        'b11.csd',
+        'b12.csd',
+    ],
+    'a5,png': [
+        'b4.csd',
+        'b5.csd',
+        'b9.csd',
+        'b11.csd',
+        'b12.csd',
+    ],
+}
 
-let csdFiles = [];
-let result = {};
+const list2 = {
+    'b1.csd': 'c1.ccs',
+    'b2.csd': 'c1.ccs',
+    'b3.csd': 'c1.ccs',
+    'b4.csd': 'c2.ccs',
+    'b5.csd': 'c3.ccs',
+    'b6.csd': 'c2.ccs',
+    'b7.csd': 'c4.ccs',
+    'b8.csd': 'c2.ccs',
+    'b9.csd': 'c3.ccs',
+    'b11.csd': 'c6.ccs',
+    'b12.csd': 'c1.ccs',
+    'b13.csd': 'c2.ccs',
+    'b14.csd': 'c2.ccs',
+    'b15.csd': 'c3.ccs',
+}
 
-for(const key in list){
-    list[key].forEach(element => {
-        if(csdFiles.includes(element))
-        {}else{
-            csdFiles.push(element)
+
+
+
+
+const searchDataProcess = (picBelongList, csdBelongList) => {
+    let csdFiles = [];
+    let csdList = {};
+    let ccsList = {};
+    const ccsKey = Object.keys(csdBelongList);
+
+    for(const key in picBelongList){
+        picBelongList[key].forEach(element => {
+            if(csdFiles.includes(element))
+            {}else{
+                csdFiles.push(element)
+            }
+        });
+    }
+    csdFiles.sort()
+    // console.log(csdFiles);
+    csdFiles.forEach(element => {
+        const picList = Object.keys(picBelongList).filter(key => picBelongList[key].indexOf(element)>=0);
+        // console.log(picList);
+        csdList[element] = picList;
+    })
+    for(const i in ccsKey){
+        const tempCcs = csdBelongList[ccsKey[i]];
+        if(ccsList.hasOwnProperty(tempCcs)){
+            const tempChild = ccsList[tempCcs];
+            if(!tempChild.hasOwnProperty(ccsKey[i])){
+                ccsList[tempCcs][ccsKey[i]] = csdList[ccsKey[i]]
+            }
+        }else{
+            ccsList[tempCcs] = {};
+            ccsList[tempCcs][ccsKey[i]] = csdList[ccsKey[i]];
         }
-    });
+    }
+    return ccsList
 }
-csdFiles.sort()
-// console.log(csdFiles);
-const picBelong = function(value){
-    return Object.keys(list).filter(key => list[key].indexOf(value)>=0);
+
+const rowConvert = (inputObj) => {
+    const ccsList = Object.keys(inputObj)
+    let rowList = [];
+    for(const i in ccsList){
+        const csdList = Object.keys(inputObj[ccsList[i]]);
+        for(const j in csdList){
+            const picList = inputObj[ccsList[i]][csdList[j]];
+            for(const k in picList){
+                let row = {ccs: '', csd: '', pic: picList[k]}
+                row.ccs = (j+k)==0?ccsList[i]:'';
+                row.csd = k==0?csdList[j]:'';
+                rowList.push(row);
+            }
+        }
+    }
+    return rowList
 }
-csdFiles.forEach(element => {
-    const picList = picBelong(element);
-    // console.log(picList);
-    result[element] = picList;
-})
-console.log(result);
+
+const searchDataOuput = (listPic, listCsd) => {
+   return rowConvert(searchDataProcess(listPic, listCsd))
+}
+
+console.log(searchDataOuput(list, list2));
+// export {searchDataOuput}
+
+
