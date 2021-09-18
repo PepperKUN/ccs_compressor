@@ -34,13 +34,19 @@ const createExcel = function(data){
  
     console.log('开始添加数据');
     // 开始添加数据
+    // worksheet.getCell('A2').border = {
+    //   top: {style:'double', color: {argb:'FF00FF00'}},
+    //   left: {style:'double', color: {argb:'FF00FF00'}},
+    //   bottom: {style:'double', color: {argb:'FF00FF00'}},
+    //   right: {style:'double', color: {argb:'FF00FF00'}}
+    // };
+    worksheet.getRow(2).commit();
     for(let i=0; i<data.length;  i++) {
       worksheet.addRow(data[i]);
       if(data[i].ccs.length>0&&i>0){
         worksheet.mergeCells(mark_1+2, 1, i+1, 1);
-        worksheet.getCell(mark_1+2, 1).alignment = { vertical: 'top', horizontal: 'center' };
+        worksheet.getRow(mark_1+1).commit();
         mark_1 = i;
-        // worksheet.commit();
       }
       if(data[i].csd.length>0&&i>0){
         worksheet.mergeCells(mark_2+2, 2, i+1, 2);
@@ -57,7 +63,7 @@ const createExcel = function(data){
         console.log((current_num / length * 100).toFixed(2) + '%');
       }
     }
-    worksheet.getCell('A2').alignment = { vertical: 'middle', horizontal: 'center' };
+
     console.log('添加数据完毕：', (Date.now() - start_time));
     workbook.commit();
  
