@@ -9,6 +9,7 @@ const path = require('path')
 
 import {CcsClean}  from './read'
 import {writeExcel}  from './excelProcess'
+import {getElements} from './search2'
 
 let win
 
@@ -147,3 +148,63 @@ ipcMain.on("readFiles", (event, args) => {
 ipcMain.on("excel", (event, args) => {
   writeExcel(JSON.parse(args))
 })
+
+const testObj = {
+  a: {
+      a1: ['1', '2', '3']
+  },
+  b: {
+      c: {
+          y: '10',
+          x: {
+              x1: '3',
+              x2: 'test'
+          }
+      },
+      d: {
+          d1: [
+              {
+                  t: '2',
+                  y: '22452346'
+              },{
+                  t: '4',
+                  y: '66'
+              },{
+                  t: '8',
+                  y: '09234'
+              }
+          ]
+      }
+  }
+}
+
+var ownerArr = [
+  {
+      "owner": "Colin",
+      "pets": [{
+          "name": "dog1"
+      }, {
+          "name": "dog2",
+          'c': {
+              'u': {
+                  'p': {
+                      "t": '40958309457234459860386',
+                      'i': {
+                          't': '24325/12234 234',
+                      },
+                  }
+              }
+         }
+      }]
+  }, {
+  "owner": "John",
+  "pets": [{
+      "name": "dog3",
+      "t": '5677'
+  }, {
+      "name": "dog4"
+  }]
+}];
+
+// console.log(getObject(testObj, 'y', '234'));
+console.log(getElements('E:/sampleCCS/cocosstudio', '3d_soldier_infantry'));
