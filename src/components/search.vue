@@ -1,38 +1,23 @@
 <template>
     <div :class="[fileIn?'expand':'h-9', 'file_list', 'flex-grow-0', 'relative', 'transition-all', 'duration-300', 'ease-out', 'flex', 'flex-col']" @dragover="allowDrop" @drop="fileDrop">
         <div class="add absolute z-20 shadow-md -top-6 transform -translate-x-1/2 left-1/2 cursor-pointer p-3 rounded-full bg-white" @click="addPic" v-if="!fileIn">
-            <svg class="icon" aria-hidden="true">
+            <svg class="icon bg-gray-600" aria-hidden="true">
                 <use xlink:href="#icon-add"></use>
             </svg>
         </div>
         <div class="feather_bg absolute top-0 w-1/3 h-40 transform -translate-x-1/2 left-1/2 z-0 flex-none light_three"></div>
             <ul class="relative z-10 bg-white rounded-t-md min-h-3 shadow-md flex-shrink flex-grow overflow-auto px-6 py-3 divide-y divide-gray-200 scrollbar scrollbar-w-2 scrollbar-thumb-gray-200 scrollbar-track-transparent scrollbar-thumb-rounded-full">
                 <li v-for="item in fileList" :key="item.id" class="file_list">
-                    <div class="flex py-3 cursor-pointer" @click="subMenu(item)">
-                        <h6 class="text-base text-gray-800">{{item.name}}</h6>
-                    </div>
-                    <transition name="slide">
-                        <div class="row_operate flex overflow-hidden h-10 justify-center items-start divide-x" v-show="item.operate">
-                            <div class="flex-auto flex justify-center items-center cursor-pointer">
-                                <svg class="icon text-2xl" aria-hidden="true">
-                                    <use xlink:href="#icon-folder"></use>
-                                </svg>
-                                <span class="text-sm text-gray-500 pl-1">打开文件夹</span>
-                            </div>
-                            <div class="flex-auto flex justify-center items-center cursor-pointer">
-                                <svg class="icon text-2xl" aria-hidden="true">
-                                    <use xlink:href="#icon-backup"></use>
-                                </svg>
-                                <span class="text-sm text-gray-500 pl-1">备份</span>
-                            </div>
-                            <div class="flex-auto flex justify-center items-center cursor-pointer" @click="deleteItem(item)">
-                                <svg class="icon text-2xl" aria-hidden="true">
-                                    <use xlink:href="#icon-delete"></use>
-                                </svg>
-                                <span class="text-sm text-red-600 pl-1">删除</span>
-                            </div>
+                    <div class="flex py-3">
+                        <div class="flex-1 overflow-hidden flex-grow">
+                            <h6 class="text-base text-gray-800 overflow-ellipsis overflow-hidden w-full" :title="item.name">{{item.name}}</h6>
                         </div>
-                    </transition>
+                        <div class="stats flex-none flex items-center">
+                            <svg class="icon text-2xl cursor-pointer" aria-hidden="true" title="delete it" @click="deleteItem(item)">
+                                <use xlink:href="#icon-delete"></use>
+                            </svg>
+                        </div>
+                    </div>
                 </li>
             </ul>
         <div class="flex-grow-0 bg-white relative z-10 p-4 flex items-center justify-center gap-2">
