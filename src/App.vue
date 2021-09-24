@@ -88,7 +88,8 @@ export default {
     listLength(newData){
       if(newData[this.currentIndex] === 0){
         this.fileIn[this.currentIndex] = false
-
+      }else{
+        this.fileIn[this.currentIndex] = true
       }
 
     }

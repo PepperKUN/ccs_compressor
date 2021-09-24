@@ -4,7 +4,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 contextBridge.exposeInMainWorld('ipcRenderer', {
     send: (channel, data) => {
       // whitelist channels
-      let validChannels = ['toMain', 'closeWin', 'minimize', 'readFiles', 'excel']
+      let validChannels = ['toMain', 'closeWin', 'minimize', 'readFiles', 'excel', 'search']
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data)
       }

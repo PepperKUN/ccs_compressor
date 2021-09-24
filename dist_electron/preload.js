@@ -94,7 +94,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! electron */ \"electron\");\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_0__);\n\r\n// require('./read');\r\n\r\nelectron__WEBPACK_IMPORTED_MODULE_0__[\"contextBridge\"].exposeInMainWorld('ipcRenderer', {\r\n    send: (channel, data) => {\r\n      // whitelist channels\r\n      let validChannels = ['toMain', 'closeWin', 'minimize', 'readFiles', 'excel']\r\n      if (validChannels.includes(channel)) {\r\n        electron__WEBPACK_IMPORTED_MODULE_0__[\"ipcRenderer\"].send(channel, data)\r\n      }\r\n    },\r\n    receive: (channel, callback) => {\r\n      let validChannels = ['fromMain', 'Writefile']\r\n      if (validChannels.includes(channel)) {\r\n        // Deliberately strip event as it includes `sender`\r\n        electron__WEBPACK_IMPORTED_MODULE_0__[\"ipcRenderer\"].on(channel, (event, args) => {\r\n          callback(event, args)\r\n        })\r\n      }\r\n    }\r\n  })\r\n\n\n//# sourceURL=webpack:///./src/preload.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! electron */ \"electron\");\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_0__);\n\r\n// require('./read');\r\n\r\nelectron__WEBPACK_IMPORTED_MODULE_0__[\"contextBridge\"].exposeInMainWorld('ipcRenderer', {\r\n    send: (channel, data) => {\r\n      // whitelist channels\r\n      let validChannels = ['toMain', 'closeWin', 'minimize', 'readFiles', 'excel', 'search']\r\n      if (validChannels.includes(channel)) {\r\n        electron__WEBPACK_IMPORTED_MODULE_0__[\"ipcRenderer\"].send(channel, data)\r\n      }\r\n    },\r\n    receive: (channel, callback) => {\r\n      let validChannels = ['fromMain', 'Writefile']\r\n      if (validChannels.includes(channel)) {\r\n        // Deliberately strip event as it includes `sender`\r\n        electron__WEBPACK_IMPORTED_MODULE_0__[\"ipcRenderer\"].on(channel, (event, args) => {\r\n          callback(event, args)\r\n        })\r\n      }\r\n    }\r\n  })\r\n\n\n//# sourceURL=webpack:///./src/preload.js?");
 
 /***/ }),
 
@@ -105,7 +105,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var elec
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("module.exports = __webpack_require__(/*! E:\\vue_electron\\src\\preload.js */\"./src/preload.js\");\n\n\n//# sourceURL=webpack:///multi_./src/preload.js?");
+eval("module.exports = __webpack_require__(/*! E:\\new_git\\src\\preload.js */\"./src/preload.js\");\n\n\n//# sourceURL=webpack:///multi_./src/preload.js?");
 
 /***/ }),
 

@@ -207,4 +207,6 @@ var ownerArr = [
 }];
 
 // console.log(getObject(testObj, 'y', '234'));
-console.log(getElements('E:/sampleCCS/cocosstudio', '3d_soldier_infantry'));
+ipcMain.on("search", (event, args) => {
+  console.log(getElements('E:/sampleCCS/cocosstudio', args));
+})
