@@ -58,6 +58,7 @@ const Taglist =[
   "DisabledFileData",
   "PressedFileData",
   "NormalFileData",
+  "TextureFile",
 ]
 
   const getType = function(value) {
@@ -92,18 +93,22 @@ const Taglist =[
     return readCcFile(inputPath).then(data =>{
       tempCcs = JSON.parse(convert.xml2json(data, {compact: true, spaces: 4}));
       let csdObj = tempCcs.Solution.SolutionFolder.Group.RootFolder.Project;
+      let effectObj = tempCcs.Solution.SolutionFolder.Group.RootFolder.Folder;
       tempCcs.Solution.SolutionFolder.Group.RootFolder = {};
       // tempCcs = tempCcs;
       // console.log(csdObj);
-      return {csd: csdObj, folder: tempCcs.Solution.SolutionFolder.Group.RootFolder.Folder};
+      return {csd: csdObj, folder: effectObj};
     }).then(data =>{
       if(!data.csd)throw new Error('No csd file was included!')
+      // console.log(data.folder);
       let cocostudio = {
         "Folder": [],
         "Project": [],
       };
       let promises = [];
       let allPath = [];
+      let framePath = [];
+      let frameFinPath = [];
       let cleanPath =[];
       const relativePath = inputPath.substring(0, inputPath.lastIndexOf('\\'));
 
@@ -115,9 +120,17 @@ const Taglist =[
             doc = parser.parseFromString(data, 'text/xml');
             Taglist.forEach(tagName => {
               Array.from(doc.getElementsByTagName(tagName)).forEach(element => {
-                allPath.push(element.getAttribute('Path'));
+                const frameCheck = element.getAttribute('Type') === 'PlistSubImage';
+                if(frameCheck){
+                  const plistPath = element.getAttribute('Plist');
+                  if(!framePath.includes(plistPath))framePath.push(plistPath)
+                  if(plistPath.length>0)allPath.push(element.getAttribute('Plist'));
+                }else{
+                  allPath.push(element.getAttribute('Path'));
+                }
               })
             })
+
           }).catch(error =>{
             const idx = data.csd.findIndex(el => el._attributes.Name ===  element._attributes.Name);
             data.csd.splice(idx, 1);
@@ -130,7 +143,13 @@ const Taglist =[
           if(!cleanPath.includes(element))cleanPath.push(element)
         })
         cleanPath.sort();
-        // console.log(cleanPath)
+        // console.log(framePath)
+        framePath.forEach(element => {
+          const idx = element.lastIndexOf('/');
+          const tempPath = element.slice(0, idx);
+          if(!frameFinPath.includes(tempPath)&&tempPath.length>0)frameFinPath.push(tempPath);
+        })
+        console.log(frameFinPath);
 
         //path to json
         cleanPath.forEach(element => {
@@ -190,6 +209,33 @@ const Taglist =[
 
         });
         // console.log(JSON.stringify(cocostudio));
+        frameFinPath.forEach(element => {
+          const strBlock = element.split('/');
+          let tempFolder = data.folder;
+          let tempCocos = cocostudio.Folder;
+          // let cocosCopy = cocostudio;
+          let cocosIdx = [];
+          for( const i in strBlock){
+            const folderCache = (tempFolder instanceof Array)?tempFolder.find(item => item._attributes.Name === strBlock[i]):tempFolder;
+            tempFolder = (i < (strBlock.length - 1))?folderCache.Folder:folderCache;
+            let cocosCache;
+            if(tempCocos instanceof Array){
+              const idx = tempCocos.findIndex(item => item._attributes.Name === strBlock[i]);
+              cocosCache = tempCocos[idx];
+              cocosIdx.push(idx)
+            }else{
+              cocosCache = tempCocos;
+              cocosIdx.push(0)
+            }
+            if(cocosCache.hasOwnProperty('Folder')){
+              tempCocos = (i < (strBlock.length-1))?cocosCache['Folder']:cocosCache;
+            }
+          }
+          console.log(tempFolder, tempCocos);
+          const finIdx = tempCocos.findIndex(item => item._attributes.Name === strBlock[strBlock.length - 1])
+          tempCocos.splice(finIdx, 1);
+          tempCocos.push(tempFolder)
+        })
 
         const defaultIndex = cocostudio.Folder.indexOf(cocostudio.Folder.find(item => item._attributes.Name === "Default"));
         if(defaultIndex > -1){
@@ -198,18 +244,18 @@ const Taglist =[
         return cocostudio;
       }).catch(error => console.log(error));
     }).then(data => {
-      // tempCcs.Solution.SolutionFolder.Group.RootFolder = {
-      //   ...rootFolder_attributes,
-      //   ...data
-      // }
-      // // console.log(tempCcs);
+      tempCcs.Solution.SolutionFolder.Group.RootFolder = {
+        ...rootFolder_attributes,
+        ...data
+      }
+      // console.log(tempCcs);
       
   
-      // const options = {compact: true, ignoreComment: true, spaces: 2};
+      const options = {compact: true, ignoreComment: true, spaces: 2};
   
-      // const content = convert.json2xml(tempCcs, options);
+      const content = convert.json2xml(tempCcs, options);
 
-      // return writeFile(outPath, content, 'sucess!!!');
+      writeFile(outPath, content, 'sucess!!!');
       return data;
     }).catch(err => err)
   }

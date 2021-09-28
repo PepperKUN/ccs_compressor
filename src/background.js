@@ -130,14 +130,14 @@ ipcMain.on("readFiles", (event, args) => {
     if(note instanceof Error){
       info = {
         path:args,
-        result: undefined,
+        result: null,
         error: note,
       }
     }else{
       info = {
         path:args,
         result: note,
-        error: undefined,
+        error: null,
       }
     }
     event.reply("fromMain", info);
