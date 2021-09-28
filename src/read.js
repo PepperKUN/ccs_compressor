@@ -95,9 +95,9 @@ const Taglist =[
       tempCcs.Solution.SolutionFolder.Group.RootFolder = {};
       // tempCcs = tempCcs;
       // console.log(csdObj);
-      return csdObj;
+      return {csd: csdObj, folder: tempCcs.Solution.SolutionFolder.Group.RootFolder.Folder};
     }).then(data =>{
-      if(!data)throw new Error('No csd file was included!')
+      if(!data.csd)throw new Error('No csd file was included!')
       let cocostudio = {
         "Folder": [],
         "Project": [],
@@ -107,8 +107,8 @@ const Taglist =[
       let cleanPath =[];
       const relativePath = inputPath.substring(0, inputPath.lastIndexOf('\\'));
 
-      if(!Array.isArray(data))data = [data];
-      data.forEach(element =>{
+      if(!Array.isArray(data.csd))data.csd = [data.csd];
+      data.csd.forEach(element =>{
         const el_path = `${relativePath}/cocosstudio/${element._attributes.Name}`;
         promises.push(
           readCcFile(el_path).then(data =>{
@@ -119,13 +119,13 @@ const Taglist =[
               })
             })
           }).catch(error =>{
-            const idx = data.findIndex(el => el._attributes.Name ===  element._attributes.Name);
-            data.splice(idx, 1);
+            const idx = data.csd.findIndex(el => el._attributes.Name ===  element._attributes.Name);
+            data.csd.splice(idx, 1);
           })
         )
       })
       return Promise.all(promises).then(() => {
-        cocostudio['Project'] = data;
+        cocostudio['Project'] = data.csd;
         allPath.forEach(element => {
           if(!cleanPath.includes(element))cleanPath.push(element)
         })
