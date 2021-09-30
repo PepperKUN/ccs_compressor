@@ -88,6 +88,14 @@ const Taglist =[
     })
   }
 
+  const setToValue = function(obj, value, path) {
+    for (const i in path){
+      obj = obj[path[i]]
+      console.log(obj);
+      if(i===(path.length-1))obj = value;
+    };
+  }
+
 
   const CcsClean = function(inputPath, outPath){
     return readCcFile(inputPath).then(data =>{
@@ -143,72 +151,78 @@ const Taglist =[
           if(!cleanPath.includes(element))cleanPath.push(element)
         })
         cleanPath.sort();
-        // console.log(framePath)
+        // cleanPath.forEach(el => console.log(el))
         framePath.forEach(element => {
           const idx = element.lastIndexOf('/');
           const tempPath = element.slice(0, idx);
           if(!frameFinPath.includes(tempPath)&&tempPath.length>0)frameFinPath.push(tempPath);
         })
-        console.log(frameFinPath);
 
         //path to json
         cleanPath.forEach(element => {
-          const strBlock = element.split('/');
-          let tempObj = cocostudio;
-
-
-          for(let i=0; i<strBlock.length; i++){
-            const propName = {
-              "_attributes": {
-                  "Name": strBlock[i],
+          const idx = cleanPath.findIndex(el => el === element);
+          // if(idx>107&&idx<110){
+          // if(idx>104&&idx<170){
+          if(true){
+            const strBlock = element.split('/');
+            let tempObj = cocostudio;
+            // console.log(strBlock);
+  
+            for(const i in strBlock){
+              const propName = {
+                "_attributes": {
+                    "Name": strBlock[i],
+                }
               }
-            }
-
-            if(i==(strBlock.length-1)){
-
-              //file type parse
-              let extend = strBlock[i].split('.');
-              const format = getType(extend[extend.length - 1]);
-
-              const tag = Object.keys(tempObj).find(ele => ele === format);
-
-              
-              if(tag){
-                if(tempObj[tag].findIndex(ele => ele._attributes.Name === strBlock[i])<0){
-                  tempObj[tag].push(propName);
+  
+              if(i==(strBlock.length-1)){
+  
+                //file type parse
+                let extend = strBlock[i].split('.');
+                const format = getType(extend[extend.length - 1]);
+  
+                const tag = Object.keys(tempObj).find(ele => ele === format);
+  
+                
+                if(tag){
+                  if(tempObj[tag].findIndex(ele => ele._attributes.Name === strBlock[i])<0){
+                    tempObj[tag].push(propName);
+                  }
+                }else{
+                  tempObj[format] = [];
+                  tempObj[format].push(propName);
                 }
               }else{
-                tempObj[format] = [];
-                tempObj[format].push(propName);
-              }
-            }else{
-
-              let cond = {};
-
-              // debug
-              try{
-                cond = tempObj["Folder"].find(data => data._attributes.Name === strBlock[i]);
-              }catch{error => {
-                console.log(error);
-                console.log(strBlock);
+  
+                let cond = {};
+  
+                // debug
+                try{
+                  cond = tempObj.Folder.find(data => data._attributes.Name === strBlock[i]);
+                }catch{error => {
+                  console.log(error);
+                  console.log(strBlock);
+                  }
                 }
-              }
-              // debug
-
-              if(cond){
-                tempObj = cond;
-              }else{
-                if(i !== strBlock.length-2){
-                  propName["Folder"] = [];
+                // debug
+  
+                if(cond){
+                  tempObj = cond;
+                }else{
+                  if(i !== strBlock.length-2){
+                    propName["Folder"] = [];
+                  }
+                  let n = tempObj["Folder"].push(propName);
+                  tempObj = tempObj["Folder"][n-1];
                 }
-                let n = tempObj["Folder"].push(propName);
-                tempObj = tempObj["Folder"][n-1];
+                // console.log(JSON.stringify(tempObj));
               }
             }
           }
 
         });
         // console.log(JSON.stringify(cocostudio));
+
         frameFinPath.forEach(element => {
           const strBlock = element.split('/');
           let tempFolder = data.folder;
@@ -222,19 +236,25 @@ const Taglist =[
             if(tempCocos instanceof Array){
               const idx = tempCocos.findIndex(item => item._attributes.Name === strBlock[i]);
               cocosCache = tempCocos[idx];
+              cocosIdx.push('Folder')
               cocosIdx.push(idx)
             }else{
               cocosCache = tempCocos;
-              cocosIdx.push(0)
+              cocosIdx.push('Folder')
             }
             if(cocosCache.hasOwnProperty('Folder')){
               tempCocos = (i < (strBlock.length-1))?cocosCache['Folder']:cocosCache;
             }
           }
           console.log(tempFolder, tempCocos);
-          const finIdx = tempCocos.findIndex(item => item._attributes.Name === strBlock[strBlock.length - 1])
-          tempCocos.splice(finIdx, 1);
-          tempCocos.push(tempFolder)
+          if(tempCocos instanceof Array){
+            const finIdx = tempCocos.findIndex(item => item._attributes.Name === strBlock[strBlock.length - 1])
+            tempCocos.splice(finIdx, 1);
+            tempCocos.push(tempFolder)
+          }else{
+            setToValue(cocostudio, tempFolder, cocosIdx)
+          }
+          console.log(cocosIdx);
         })
 
         const defaultIndex = cocostudio.Folder.indexOf(cocostudio.Folder.find(item => item._attributes.Name === "Default"));
