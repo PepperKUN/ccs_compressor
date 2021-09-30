@@ -1,7 +1,7 @@
 <template>
     <div :class="[fileIn?'expand':'h-9', 'file_list', 'flex-grow-0', 'relative', 'transition-all', 'duration-300', 'ease-out', 'flex', 'flex-col']" @dragover="allowDrop" @drop="fileDrop">
         <div class="add absolute z-20 shadow-md -top-6 transform -translate-x-1/2 left-1/2 cursor-pointer p-3 rounded-full bg-white" @click="addPic" v-if="!fileIn">
-            <svg class="icon bg-gray-600" aria-hidden="true">
+            <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-add"></use>
             </svg>
         </div>

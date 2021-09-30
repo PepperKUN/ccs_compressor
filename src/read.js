@@ -89,11 +89,11 @@ const Taglist =[
   }
 
   const setToValue = function(obj, value, path) {
-    for (const i in path){
-      obj = obj[path[i]]
-      console.log(obj);
-      if(i===(path.length-1))obj = value;
-    };
+    let i;
+    for (i = 0; i < path.length - 1; i++)
+        obj = obj[path[i]];
+
+    obj[path[i]] = value;
   }
 
 
