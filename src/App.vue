@@ -1,7 +1,7 @@
 <template>
     <div :class="['panel', 'flex', 'flex-col', 'h-screen',  tab_lists[currentIndex].bgColor, 'overflow-hidden',]" @dragenter="dragIn" @dragleave="dragOut" @dragover="allowDrop" @drop="fileDrop">
       <ul class="top_bar flex flex-wrap w-full flex-grow-0 relative z-20">
-        <li :class="['bar_btn', 'hover:'+tab_lists[currentIndex].hoverColor]">
+        <li :class="['bar_btn', 'hover:'+tab_lists[currentIndex].hoverColor]" title="PepperKUN">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-options"></use>
           </svg>
@@ -118,7 +118,8 @@ export default {
     },
     fileDrop(event){
         event.preventDefault();
-        event.stopPropagation();
+        // event.stopPropagation();
+        // console.log(event);
         let tempListLength = JSON.parse(JSON.stringify(this.listLength));
         // console.log(this.listLength);
         // tempListLength[this.currentIndex] = tempListLength[this.currentIndex] + 0;

@@ -4,7 +4,14 @@ module.exports = {
         preload: {
           preload: 'src/preload.js',
         },
-        // Or, for multiple preload files:
+        builderOptions: {
+          "win": {
+            "target": ["nsis", "msi"],
+            "icon": "build/icons/icon.png",
+            // "sign": "./electron/winsign.js",
+            "publisherName": "PepperKUN"
+          },
+        }
       }
     }
   }

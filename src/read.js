@@ -59,6 +59,21 @@ const Taglist =[
   "PressedFileData",
   "NormalFileData",
   "TextureFile",
+  "TextureData",
+  "ImageFileData",
+  "NormalBackFileData",
+  "PressedBackFileData",
+  "DisableBackFileData",
+  "NodeNormalFileData",
+  "NodeDisableFileData",
+  "BackGroundData",
+  "ProgressBarData",
+  "BallNormalData",
+  "BallPressedData",
+  "BallDisabledData",
+  "LabelAtlasFileImage_CNB",
+  "LabelBMFontFile_CNB",
+  "StencilImageData",
 ]
 
   const getType = function(value) {
@@ -163,7 +178,7 @@ const Taglist =[
           const idx = cleanPath.findIndex(el => el === element);
           // if(idx>107&&idx<110){
           // if(idx>104&&idx<170){
-          if(true){
+          // if(true){
             const strBlock = element.split('/');
             let tempObj = cocostudio;
             // console.log(strBlock);
@@ -218,7 +233,7 @@ const Taglist =[
                 // console.log(JSON.stringify(tempObj));
               }
             }
-          }
+          // }
 
         });
         // console.log(JSON.stringify(cocostudio));
@@ -246,7 +261,7 @@ const Taglist =[
               tempCocos = (i < (strBlock.length-1))?cocosCache['Folder']:cocosCache;
             }
           }
-          console.log(tempFolder, tempCocos);
+          // console.log(tempFolder, tempCocos);
           if(tempCocos instanceof Array){
             const finIdx = tempCocos.findIndex(item => item._attributes.Name === strBlock[strBlock.length - 1])
             tempCocos.splice(finIdx, 1);
@@ -254,7 +269,7 @@ const Taglist =[
           }else{
             setToValue(cocostudio, tempFolder, cocosIdx)
           }
-          console.log(cocosIdx);
+          // console.log(cocosIdx);
         })
 
         const defaultIndex = cocostudio.Folder.indexOf(cocostudio.Folder.find(item => item._attributes.Name === "Default"));

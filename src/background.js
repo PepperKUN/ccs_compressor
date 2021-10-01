@@ -22,13 +22,13 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 940,
-    // maxWidth: 500,
+    width: 370,
+    maxWidth: 500,
     minWidth: 300,
     height: 590,
     frame: false,
     transparent: false,
-    icon: './src/assets/icon.png',
+    icon: './build/icons/icon.png',
     webPreferences: {
       
       // Use pluginOptions.nodeIntegration, leave this alone

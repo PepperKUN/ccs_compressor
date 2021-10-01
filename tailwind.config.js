@@ -1,7 +1,17 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: [],
+  purge: {
+    // Learn more on https://tailwindcss.com/docs/controlling-file-size/#removing-unused-css
+    enabled: process.env.NODE_ENV === 'production',
+    content: [
+      "./src/App.vue",
+      "./src/index.css",
+      "./src/components/compress.vue",
+      "./src/components/packup.vue",
+      "./src/components/search.vue",
+    ]
+  },
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
@@ -15,8 +25,8 @@ module.exports = {
           dark: '#583428'
         },
         rose: {
-          light: '#E11D48',
-          dark: '#881337'
+          light: '#8800c1',
+          dark: '#3e0058'
         }
       }
     },
