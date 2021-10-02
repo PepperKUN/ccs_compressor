@@ -38,7 +38,7 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {}
   },
   plugins: [
     require("tailwindcss-scrollbar"),
