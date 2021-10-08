@@ -271,7 +271,7 @@ export default {
             }
         ],
         timer: null,
-        delay: 200,
+        delay: 300,
         itemRefs: [],
     }
   },
@@ -332,7 +332,7 @@ export default {
     fileDrop(event){
         event.preventDefault();
         event.stopPropagation();
-        event.dataTransfer.files.forEach(f => {
+         Array.from(event.dataTransfer.files).forEach(f => {
             const rawList = f.name.split('.');
             if(!this.fileList.find(Element => Element.path === f.path)&&this.acceptType.includes(rawList[rawList.length - 1].toLowerCase())){
               this.fileList.push({
