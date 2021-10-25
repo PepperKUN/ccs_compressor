@@ -163,7 +163,7 @@ const Taglist =[
       return Promise.all(promises).then(() => {
         cocostudio['Project'] = data.csd;
         allPath.forEach(element => {
-          if(!cleanPath.includes(element))cleanPath.push(element)
+          if(!cleanPath.includes(element)&&element.length!==0)cleanPath.push(element)
         })
         cleanPath.sort();
         // cleanPath.forEach(el => console.log(el))
