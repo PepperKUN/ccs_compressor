@@ -35,14 +35,14 @@
               <svg class="icon text-2xl" aria-hidden="true">
                 <use xlink:href="#icon-delete"></use>
               </svg>
-              <span class="text-sm text-red-600 pl-1">删除</span>
+              <span class="text-sm text-red-600 pl-1">移除</span>
             </div>
           </div>
         </transition>
       </li>
     </ul>
     <div class="flex-grow-0 bg-white relative z-10 p-4 flex items-center justify-center gap-2">
-      <button class="px-2 py-2 w-40 rounded-md bg-red-600 text-white shadow-lg hover:bg-red-500 hover:shadow-none" @click="deleteAll" v-show="fileList.length>0&&!compressing">删除全部</button>
+      <button class="px-2 py-2 w-40 rounded-md bg-red-600 text-white shadow-lg hover:bg-red-500 hover:shadow-none" @click="deleteAll" v-show="fileList.length>0&&!compressing">清理列表</button>
       <button class="px-4 py-2 w-40 rounded-md bg-gray-400 text-white shadow-lg hover:bg-gray-200 hover:shadow-none" v-if="compressing" @click="stop">放弃</button>
       <button class="px-4 py-2 w-40 rounded-md bg-green-600 text-white shadow-lg hover:bg-green-500 hover:shadow-none" v-else @click="begin">压缩</button>
     </div>

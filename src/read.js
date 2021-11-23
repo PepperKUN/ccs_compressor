@@ -24,8 +24,10 @@ const typeTable = {
   ],
   "TTF": [
       "ttf",
-      "TTF",
       "otf"
+  ],
+  "Spine": [
+    "json"
   ],
   "Project": [
     "csd"
@@ -74,6 +76,7 @@ const Taglist =[
   "LabelAtlasFileImage_CNB",
   "LabelBMFontFile_CNB",
   "StencilImageData",
+  "SpineFile",
 ]
 
   const getType = function(value) {
@@ -194,7 +197,7 @@ const Taglist =[
   
                 //file type parse
                 let extend = strBlock[i].split('.');
-                const format = getType(extend[extend.length - 1]);
+                const format = getType(extend[extend.length - 1].toLowerCase());
   
                 const tag = Object.keys(tempObj).find(ele => ele === format);
   

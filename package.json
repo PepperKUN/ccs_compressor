@@ -2,7 +2,7 @@
   "name": "cocos_toolkit",
   "author": "PepperKUN",
   "description": "Collection of tools for Cocosstuido made by PepperKUN",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
